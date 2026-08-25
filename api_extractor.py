@@ -3,7 +3,7 @@ import pandas as pd
 import sqlite3
 from prefect import task, flow
 
-@task(name="Extrair e Transformar Issues", retries=2)
+@task(name="Extract and Transform Issues", retries=2)
 def extract_and_transform_issues(repo_url="https://api.github.com/repos/fastapi/fastapi/issues", page_size=10):
     params = {"state": "open", "per_page": page_size}
     
@@ -22,7 +22,7 @@ def extract_and_transform_issues(repo_url="https://api.github.com/repos/fastapi/
     df_clean = df_clean.drop_duplicates(subset=['id'])
     return df_clean
 
-@task(name="Carga Incremental no SQLite")
+@task(name="Incremental Load to SQLite")
 def load_incremental(df):
     conn = sqlite3.connect('agile_data.db')
     cursor = conn.cursor()
@@ -63,4 +63,4 @@ def agile_analytics_pipeline():
         load_incremental(df_final)
 
 if __name__ == "__main__":
-    agile_analytics_pipeline()
+    agile_analytics_pipeline() 
