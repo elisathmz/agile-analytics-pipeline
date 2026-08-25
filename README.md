@@ -17,5 +17,6 @@ This is a data pipeline I built to extract, clean, and safely store project mana
 
 ## How to run
 
-Clone this repository, install the required libraries (pip install requests pandas prefect), and run:
-python api_extractor.py
+Clone this repository, install the required libraries by running pip install -r requirements.txt, and execute the script: python api_extractor.py
+
+Note: The extraction function is fully parameterized, allowing you to easily swap the target GitHub repository URL without changing the core logic.
