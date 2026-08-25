@@ -4,13 +4,12 @@ import sqlite3
 from prefect import task, flow
 
 @task(name="Extrair e Transformar Issues", retries=2)
-def extract_and_transform_issues():
-    url = "https://api.github.com/repos/fastapi/fastapi/issues"
-    params = {"state": "open", "per_page": 10} 
+def extract_and_transform_issues(repo_url="https://api.github.com/repos/fastapi/fastapi/issues", page_size=10):
+    params = {"state": "open", "per_page": page_size}
     
-    response = requests.get(url, params=params)
+    response = requests.get(repo_url, params=params)
     if response.status_code != 200:
-        return None
+        raise Exception(f"Failed to fetch issues: {response.status_code} {response.text}")
         
     raw_data = response.json()
     df = pd.DataFrame(raw_data)
